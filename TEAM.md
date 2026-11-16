@@ -5,7 +5,7 @@
 - Tên nhóm: LamNgayHomNay
 - Lớp: L3A
 - Repo nhóm: `K5-L3A-DAY08-LamNgayHomNay-FromWorkflowsToAgents` (xem [SUBMISSION.md](SUBMISSION.md))
-- URL repo, nhánh nộp, commit chốt: https://github.com/hhuydaugg/K5-L3A-DAY08-LamNgayHomNay-FromWorkflowsToAgents, `main`, commit chốt: (điền sau khi cả nhóm commit)
+- URL repo, nhánh nộp, commit chốt: https://github.com/hhuydaugg/K5-L3A-DAY08-LamNgayHomNay-FromWorkflowsToAgents, `main`, commit chốt: `e1053d6`
 
 ## Thành viên
 
