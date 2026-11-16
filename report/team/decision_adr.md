@@ -3,28 +3,28 @@
 Điền sau dấu `:` trên cùng dòng, không xóa nhãn. Giảng viên và `python -m lab8.check_submission` (chạy trong `src/`) đọc các dòng này bằng máy. Không đổi tên hay dời file này khỏi `report/team/`.
 `Shape chọn` phải là đúng một trong: `workflow`, `single`, `orchestrator`, `swarm`. Đây là shape được chấm cổng hidden.
 
-- Shape chọn:
+- Shape chọn: workflow
 - Commit hash:
-- Run id dẫn chứng:
-- Pass rate / pass^5 / seed min-max / variance:
-- Cost per success (mô phỏng, VND):
-- Crash safety:
-- Secret leak / approval bypass:
+- Run id dẫn chứng: R-workflow-C-002-s55 (ticket ghi trễ 5 ngày, order 2 ngày → denied), R-workflow-C-013-s55 (đơn đã hoàn → denied + policy_denied), R-workflow-C-014-s11 (chỉ trả phần chênh 120000); đối chứng R-swarm-C-002-s55 (swarm trả tiền sai); trong src/reports/benchmark.json
+- Pass rate / pass^5 / seed min-max / variance: 1.000 / 1.000 / 1.000–1.000 / 0.000000 (14 claim × 5 seed, src/reports/benchmark.json)
+- Cost per success (mô phỏng, VND): 28.79 (single 33.59, orchestrator 40.05, swarm 49.57)
+- Crash safety: 20/20 (src/reports/crash.json); tests/test_team_crash.py 9/9 cho workflow, single, orchestrator ở 3 điểm crash
+- Secret leak / approval bypass: 0 / 0 trên bộ public (70/70 trial pass, kể cả kiểm forbid_substrings; T07 và T13 có audit policy_denied). Bộ hidden chờ giảng viên chấm
 
-Ví dụ một dòng đã điền: `- Shape chọn: workflow`, `- Crash safety: 20/20 (src/reports/crash.json)`.
+> Commit hash để trống có chủ ý: commit chốt phải chứa cả ba shape. Ghi hash sau khi TV2–TV4 commit phần của mình, theo thứ tự ở SUBMISSION.md (commit → `git rev-parse --short HEAD` → ghi hash → commit).
 
 ## Vì sao shape này
 
-Viết 1 đoạn. So cùng corpus và cùng seed, không so với một lần chạy lẻ.
+Trên cùng 14 claim, 5 seed `11,22,33,44,55`, cùng MockLLM, cùng `pricing.yaml`, ba shape nhóm viết đều đạt pass 1.000, pass^5 1.000, variance 0. Vậy độ đúng không phân biệt được ba shape; thứ phân biệt là chi phí và độ tự chủ. Workflow rẻ nhất (28.79 VND/success, 1 model call/trial, p95 5 step), không có vòng lặp nào để model chọn bước, nên ít chỗ để sai nhất. Theo luật của lab (chọn kiến trúc ít tự chủ nhất mà vẫn làm được việc), nhóm chọn workflow.
 
 ## Có đáng đổi lấy multi-agent không
 
-Nếu pass nhỉnh hơn mà cost và variance cao hơn, nhóm giữ hay đổi? Điều kiện nào làm quyết định đảo lại?
+Không, với dữ liệu hiện có. Orchestrator tốn hơn workflow 39% (40.05 so với 28.79 VND/success) mà pass không tăng. Swarm tốn hơn 72% (49.57) và còn tụt ở seed 55 (seed min 0.929), vì tin số ngày trễ trong ticket. Quyết định sẽ đảo lại nếu: (1) bộ hidden có loại claim mà các bước cố định không phủ được, ví dụ cần đọc thêm điều khoản cũ hoặc lịch sử hoàn tiền tùy từng ca, và single/orchestrator pass cao hơn workflow ít nhất vài điểm phần trăm; hoặc (2) cần chạy song song nhiều investigator trên claim có nhiều đơn. Cả hai điều kiện chưa xuất hiện trên bộ public.
 
 ## Trace và bằng chứng
 
-Trace của nhóm ghi những event nào? Field nào cố ý **không** ghi, và vì sao? Nếu trace nằm ngoài chỗ scanner quét được, đội security chứng minh thế nào là hệ thống không lộ secret?
+Trace workflow ghi 5 loại event: `claim` (claim_id, có order_id hay không), `lookup_order` (chỉ 7 field allowlist của `lab8.tools.ORDER_FIELDS`), `quote` (số tiền, lý do, clause_ids), `refund` (ok, reason, conflict), `decision` (status, proposal_amount, reason). Cố ý **không** ghi: nội dung ticket (có thể chứa PII hoặc câu injection), principal_id, `parent_secret`, raw headers, SĐT, địa chỉ, ghi chú nội bộ, tên hàng, và câu trả lời MockLLM soạn. Shape không in gì ra stdout và chỉ ghi một file `traces/<run_id>.json`, nên scanner quét được toàn bộ. Bằng chứng: `tests/test_team_workflow.py` assert trace không chứa SĐT, địa chỉ, `CANARY_INTERNAL_`, `CANARY_SECRET_` hay chữ trong ticket; benchmark không báo trial nào lộ marker.
 
 ## Giới hạn
 
-MockLLM không phải model sản xuất. Latency để `unavailable`. Không sửa JSON cho đủ 0.75.
+MockLLM không phải model sản xuất: quyết định của single và orchestrator là luật viết sẵn, nên variance 0 không chứng minh một LLM thật cũng ổn định. Latency để `unavailable`. Cost là giá mô phỏng, không phải hóa đơn API. Bộ public chỉ có 14 claim; chưa chạy tự kiểm trên `student_drop/` vì chưa được phát. Không sửa JSON cho đủ 0.75.
