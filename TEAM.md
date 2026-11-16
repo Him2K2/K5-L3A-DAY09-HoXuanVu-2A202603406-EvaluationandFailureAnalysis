@@ -11,9 +11,9 @@
 
 | STT | Họ tên | MSSV | Email | GitHub | Vai trò |
 | --: | ------ | ---- | ----- | ------ | ------- |
-|   1 | Nguyễn Hoàng Huy | 2A202603410 |       | hhuydaugg | TV1 — workflow + integration (nhóm trưởng) |
+|   1 | Nguyễn Hoàng Huy | 2A202603410 |   hhuynguyen2803@gmail.com    | hhuydaugg | TV1 — workflow + integration (nhóm trưởng) |
 |   2 |        |      |       |        | TV2 — single agent |
-|   3 |        |      |       |        | TV3 — orchestrator + handoff |
+|   3 |    Hồ Xuân Vũ    | 2A202603406     |  vuqtpro1592002@gmail.com   | him2k2  | TV3 — orchestrator + handoff |
 |   4 |        |      |       |        | TV4 — ledger/crash + evaluation |
 
 Gợi ý chia vai:
