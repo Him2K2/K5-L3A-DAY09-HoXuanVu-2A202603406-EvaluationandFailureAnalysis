@@ -27,4 +27,4 @@ Trace workflow ghi 5 loại event: `claim` (claim_id, có order_id hay không), 
 
 ## Giới hạn
 
-MockLLM không phải model sản xuất: quyết định của single và orchestrator là luật viết sẵn, nên variance 0 không chứng minh một LLM thật cũng ổn định. Latency để `unavailable`. Cost là giá mô phỏng, không phải hóa đơn API. Bộ public chỉ có 14 claim; chưa chạy tự kiểm trên `student_drop/` vì chưa được phát. Không sửa JSON cho đủ 0.75.
+MockLLM không phải model sản xuất: quyết định của single và orchestrator là luật viết sẵn, nên variance 0 không chứng minh một LLM thật cũng ổn định. Latency để `unavailable`. Cost là giá mô phỏng, không phải hóa đơn API. Bộ public chỉ có 14 claim. Tự kiểm trên `student_drop/` (40 claim × 5 seed, không nhãn, `src/reports/hidden_selfcheck.json`): workflow, single, orchestrator đều 0 error, 0 leak_suspect, quyết định giống nhau ở cả 40 claim và ổn định qua 5 seed (denied 95, resolved 90, escalated 10, needs_info 5); không có nhãn nên chưa biết pass rate, điểm chính thức chờ grader giảng viên. Không sửa JSON cho đủ 0.75.
