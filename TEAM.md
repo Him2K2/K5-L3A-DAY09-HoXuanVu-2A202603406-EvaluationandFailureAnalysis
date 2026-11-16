@@ -2,17 +2,19 @@
 
 ## Thông tin nhóm
 
-- Tên nhóm:
+- Tên nhóm: LamNgayHomNay
 - Lớp: L3A
-- Repo nhóm: `K5-L3A-DAY08-TenNhom-FromWorkflowsToAgents` (xem [SUBMISSION.md](SUBMISSION.md))
-- URL repo, nhánh nộp, commit chốt:
+- Repo nhóm: `K5-L3A-DAY08-LamNgayHomNay-FromWorkflowsToAgents` (xem [SUBMISSION.md](SUBMISSION.md))
+- URL repo, nhánh nộp, commit chốt: https://github.com/hhuydaugg/K5-L3A-DAY08-LamNgayHomNay-FromWorkflowsToAgents, `main`, commit chốt: (điền sau khi cả nhóm commit)
 
 ## Thành viên
 
 | STT | Họ tên | MSSV | Email | GitHub | Vai trò |
 | --: | ------ | ---- | ----- | ------ | ------- |
-|   1 |        |      |       |        |         |
-|   2 |        |      |       |        |         |
+|   1 | Nguyễn Hoàng Huy | 2A202603410 |       | hhuydaugg | TV1 — workflow + integration (nhóm trưởng) |
+|   2 |        |      |       |        | TV2 — single agent |
+|   3 |        |      |       |        | TV3 — orchestrator + handoff |
+|   4 |        |      |       |        | TV4 — ledger/crash + evaluation |
 
 Gợi ý chia vai:
 
@@ -25,7 +27,10 @@ Gợi ý chia vai:
 
 | Người | Vai | Commit | Test đã thêm hoặc sửa |
 | --- | --- | --- | --- |
-| | | | |
+| Nguyễn Hoàng Huy (TV1, hhuydaugg) | Workflow + integration | `f52f3c9` feat(workflow): implement shape A deterministic workflow | `src/tests/test_team_workflow.py` |
+| TV2 | Single agent | chưa commit (`src/lab8/shapes/single.py`) | `src/tests/test_team_single.py` (chưa commit) |
+| TV3 | Orchestrator + handoff | chưa commit (`src/lab8/shapes/orchestrator.py`) | `src/tests/test_team_orchestrator.py` (chưa commit) |
+| TV4 | Ledger/crash + evaluation | chưa commit (`src/reports/*.json`, `report/team/decision_adr.md`, `research_card.md`) | `src/tests/test_team_crash.py` (chưa commit) |
 
 ## Cá nhân
 
@@ -38,6 +43,22 @@ report/team/MSSV_HoTen.md
 Ví dụ: `report/team/20241234_NguyenVanAn.md`.
 
 Sao chép mục dưới đây cho từng thành viên.
+
+## 2A202603410_NguyenHoangHuy
+
+### Phần việc phụ trách
+
+- TV1: shape A `workflow` và integration (chia việc trong `PHAN_CONG.md`, điền `TEAM.md`, chốt commit nộp).
+
+### Đóng góp cụ thể
+
+- Commit `f52f3c9`: viết `src/lab8/shapes/workflow.py` theo 8 bước của docstring.
+- Test `src/tests/test_team_workflow.py`: 3 test, 7 case.
+
+### Bằng chứng
+
+- 62/62 test student của workflow; benchmark public pass 1.000, pass^5 1.000 (`src/reports/benchmark.json`).
+- Báo cáo chi tiết: `report/team/2A202603410_NguyenHoangHuy.md`.
 
 ## MSSV_HoTen
 
