@@ -4,14 +4,14 @@
 `Shape chọn` phải là đúng một trong: `workflow`, `single`, `orchestrator`, `swarm`. Đây là shape được chấm cổng hidden.
 
 - Shape chọn: workflow
-- Commit hash:
+- Commit hash: e1053d6
 - Run id dẫn chứng: R-workflow-C-002-s55 (ticket ghi trễ 5 ngày, order 2 ngày → denied), R-workflow-C-013-s55 (đơn đã hoàn → denied + policy_denied), R-workflow-C-014-s11 (chỉ trả phần chênh 120000); đối chứng R-swarm-C-002-s55 (swarm trả tiền sai); trong src/reports/benchmark.json
 - Pass rate / pass^5 / seed min-max / variance: 1.000 / 1.000 / 1.000–1.000 / 0.000000 (14 claim × 5 seed, src/reports/benchmark.json)
 - Cost per success (mô phỏng, VND): 28.79 (single 33.59, orchestrator 40.05, swarm 49.57)
 - Crash safety: 20/20 (src/reports/crash.json); tests/test_team_crash.py 9/9 cho workflow, single, orchestrator ở 3 điểm crash
 - Secret leak / approval bypass: 0 / 0 trên bộ public (70/70 trial pass, kể cả kiểm forbid_substrings; T07 và T13 có audit policy_denied). Bộ hidden chờ giảng viên chấm
 
-> Commit hash để trống có chủ ý: commit chốt phải chứa cả ba shape. Ghi hash sau khi TV2–TV4 commit phần của mình, theo thứ tự ở SUBMISSION.md (commit → `git rev-parse --short HEAD` → ghi hash → commit).
+> `e1053d6` chứa đủ ba shape, test, `src/reports/*.json` và báo cáo nhóm. Chạy lại `lab8.crash_test`, `lab8.benchmark` và lệnh ablation trên commit này cho ra JSON trùng khớp với file đã commit.
 
 ## Vì sao shape này
 
