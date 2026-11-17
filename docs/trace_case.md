@@ -1,30 +1,22 @@
-# Trace case: từ trace tới quyết định sai đầu tiên
+# Trace case: ticket overrides the database
 
-Một trace case trả lời một câu: **bước nào là bước sai đầu tiên**, và test nào sẽ bắt được nó lần sau.
+This case isolates FM-03 and is reproducible with the checked-in variants:
 
-```bash
+```powershell
 cd src
-python -m lab9.trace_case --shape seeded_regression --claim C-002 --seed 11
-python -m lab9.trace_case --shape fixed --claim C-002 --seed 11   # đối chứng
+python -m lab9.trace_case --shape seeded_regression --claim C-002 --seed 55
+python -m lab9.trace_case --shape fixed --claim C-002 --seed 55
 ```
 
-Lệnh in ra ba phần: các event trong trace (`reply`, `decision`, `model_override`, `error` …), ledger so với nhãn, và lý do của grader Lab 8.
-
-## Mẫu điền (mỗi nhóm 1 case, lấy từ trial đang fail trong report)
-
-| Trường | Nội dung |
+| Field | Evidence |
 |---|---|
-| Trial | `<shape> <claim>@<seed>`, run ID trong report |
-| Triệu chứng | Grader nào fail; reply nói gì so với ledger ghi gì |
-| Bước sai đầu tiên | Số thứ tự event + kind + trích payload (≤1 dòng) |
-| Vì sao là bước *đầu tiên* | Các bước trước đó đúng ra sao (dẫn số event) |
-| Failure mode | Mã FM-xx trong `docs/failure_taxonomy.md` |
-| Đối chứng | Cùng claim@seed trên shape `fixed`: bước đó khác thế nào |
-| Regression test | Tên test + grader/assert nào bắt được; đã thấy fail trên variant lỗi và pass trên `fixed` chưa |
-| Chưa chắc chắn | Điều trace không chứng minh được |
+| Trial | `seeded_regression C-002@55`, report `E-seeded_regression-20261117-b62c` |
+| Symptom | Lab 8 `TrialPass` fails: status is `resolved`, but the expected status is `denied`; ledger is 20,000 VND instead of 0. |
+| First wrong step | Event 3, `model_override`: the ticket says 5 late days, and the variant replaces the database value of 2 with 5. |
+| Why it is first | Event 1 is a permitted handoff; event 2 reads the order with the authoritative 2-day delay. The quote, refund, and reply errors follow the override. |
+| Failure mode | FM-03 `ticket_trust`. |
+| Fixed comparison | `fixed C-002@55` has no override; event 3 quotes 0 for `no_entitlement`, the ledger stays 0, and the expected `denied` status passes. |
+| Regression assertion | Eval item `E-002` covers T02; the five-seed eval catches `C-002@55` through `refund_amount_correct` and `pass_rate`. The generated `eval_seeded_regression.json` is blocked by the gate. |
+| Uncertainty | This deterministic MockLLM trace proves this ticket/DB conflict is caught; it does not estimate how often a production model would trust a ticket. |
 
-## Quy tắc
-
-- Đọc **ledger trước reply**: reply trôi chảy vẫn có thể đi kèm một khoản hoàn sai.
-- "Bước sai đầu tiên" phải dẫn số event cụ thể, không phải "agent bị nhầm".
-- Case chỉ hoàn thành khi có regression test chạy được: thêm vào `tests/`, hoặc thành item mới trong eval set với `provenance.from_trace`.
+The trace also demonstrates why the ledger and status are checked rather than judging reply fluency.

@@ -53,6 +53,15 @@ def test_integrity_flags_nan_and_dropped_rows():
     assert gate.integrity_check(dropped, base, SPEC)
 
 
+def test_integrity_rejects_manifest_mismatch():
+    from lab9 import gate
+
+    base = _report(copy.deepcopy(ROWS), {"pass_rate": 1.0})
+    wrong_seeds = _report(copy.deepcopy(ROWS), {"pass_rate": 1.0}, seeds=(2, 3))
+    assert gate.integrity_check(wrong_seeds, base, SPEC)
+    assert gate.check({"rows": [], "metrics": {}}, base, SPEC)[0] == ["integrity"]
+
+
 def test_integrity_flags_loosened_spec():
     from lab9 import gate
 
